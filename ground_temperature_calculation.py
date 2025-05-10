@@ -25,12 +25,12 @@ def write_tif(path, array, gtf, proj, nodata_value):
 ### Блок обработки данных SoilGrids
 
 # чтение входных данных, загруженных из SoilGrids с разрешением 1000 м и осреднённых по профилю
-theta_sand, gtf, proj, _ = read_tif(r"E:\graduate_work\v1_calc\projected_rasters\sand_v1.tif") # массовая доля песка
-theta_silt, _, _, _ = read_tif(r"E:\graduate_work\v1_calc\projected_rasters\silt_v1.tif") # массовая доля ила
-theta_clay, _, _, _ = read_tif(r"E:\graduate_work\v1_calc\projected_rasters\clay_v1.tif") # массовая доля глины
-theta_org, _, _, _ = read_tif(r"E:\graduate_work\v1_calc\projected_rasters\soc_v1.tif") # Soil Organic Carbon (содержание органического углерода)
-omega_water, _, _, _ = read_tif(r"E:\graduate_work\v1_calc\projected_rasters\vwc_v1.tif") # объёмное влагосодержание
-rho_s, _, _, _ = read_tif(r"E:\graduate_work\v1_calc\projected_rasters\bdod_v1.tif") # плотность грунта
+theta_sand, gtf, proj, _ = read_tif(r"your_path.tif") # массовая доля песка
+theta_silt, _, _, _ = read_tif(r"your_path.tif") # массовая доля ила
+theta_clay, _, _, _ = read_tif(r"your_path.tif") # массовая доля глины
+theta_org, _, _, _ = read_tif(r"your_path.tif") # Soil Organic Carbon (содержание органического углерода)
+omega_water, _, _, _ = read_tif(r"your_path.tif") # объёмное влагосодержание
+rho_s, _, _, _ = read_tif(r"your_path.tif") # плотность грунта
 
 # замена пустых значений на NaN
 theta_sand = np.where(theta_sand < 0, np.nan, theta_sand)
@@ -118,11 +118,11 @@ c_vol_th = c_vol_thawed_al # объёмная теплоёмкость для т
 
 # показатели, связанные с t воздуха
 
-dd_above_zero, gtf, proj, _ = read_tif(r"E:\graduate_work\v1_calc\projected_rasters\above_zero_sum_v1.tif") # сумма градусочасов для тёплого периода
-dd_below_zero, _, _, _ = read_tif(r"E:\graduate_work\v1_calc\projected_rasters\below_zero_sum_v1.tif") # сумма градусочасов для холодного периода
-tau_summer, _, _, _ = read_tif(r"E:\graduate_work\v1_calc\projected_rasters\hours_above_zero_v1.tif") # длительность тёплого периода в часах
-tau_winter, _, _, _ = read_tif(r"E:\graduate_work\v1_calc\projected_rasters\hours_below_zero_v1.tif") # длительность холодного периода в часах
-nt, _, _, _ = read_tif(r"E:\graduate_work\interpolation\Kriging_nt_c_clip.tif") # радиационная поправка для тёплого периода
+dd_above_zero, gtf, proj, _ = read_tif(r"your_path.tif") # сумма градусочасов для тёплого периода
+dd_below_zero, _, _, _ = read_tif(r"your_path.tif") # сумма градусочасов для холодного периода
+tau_summer, _, _, _ = read_tif(r"your_path.tif") # длительность тёплого периода в часах
+tau_winter, _, _, _ = read_tif(r"your_path.tif") # длительность холодного периода в часах
+nt, _, _, _ = read_tif(r"your_path.tif") # радиационная поправка для тёплого периода
 
 omega_summer = np.where(dd_above_zero <= 0, np.nan, dd_above_zero)
 omega_winter = np.where(dd_below_zero >= 0, np.nan, dd_below_zero)
@@ -135,10 +135,10 @@ T = 8760 * 22 # длительность периода (в часах)
 
 # показатели, связанные с напочвенным покровом
 
-snow_depth, _, _, _ = read_tif(r"E:\graduate_work\v1_calc\projected_rasters\snow_depth_v1.tif") # высота снежного покрова
-snow_density, _, _, _ = read_tif(r"E:\graduate_work\v1_calc\projected_rasters\snow_density_v1.tif") # плотность снежного покрова
-r_summer_veg, _, _, _ = read_tif(r"E:\graduate_work\v1_calc\projected_rasters\r_summer_glwd_v1.tif") # термическое сопротивление растительности в тёплый период
-r_winter_veg, _, _, _ = read_tif(r"E:\graduate_work\v1_calc\projected_rasters\r_winter_glwd_v1.tif") # термическое сопротивление растительности в холодный период
+snow_depth, _, _, _ = read_tif(r"your_path.tif") # высота снежного покрова
+snow_density, _, _, _ = read_tif(r"your_path.tif") # плотность снежного покрова
+r_summer_veg, _, _, _ = read_tif(r"your_path.tif") # термическое сопротивление растительности в тёплый период
+r_winter_veg, _, _, _ = read_tif(r"your_path.tif") # термическое сопротивление растительности в холодный период
 
 snow_depth = np.where(snow_depth >= 1.3, np.nan, snow_depth) # ограничение высоты снега (ср. высота по метеостанциям * 2 = 1.3 м)
 snow_depth = np.where(snow_depth  <= 0, np.nan, snow_depth)
@@ -197,10 +197,10 @@ xi_seasonally_thawed = np.where(t_xi <= 0, xi, 9999)
 xi_seasonally_frozen = np.where(t_xi > 0, xi_th, 9999)
 
 # Сохранение итоговых растров
-write_tif(r"E:/graduate_work/v_2_results/t_xi_final_era.tif", t_xi_al, gtf, proj, nodata_value)
-write_tif(r"E:/graduate_work/v_2_results/xi_final_era.tif", xi_al, gtf, proj, nodata_value)
+write_tif(r"your_path.tif", t_xi_al, gtf, proj, nodata_value)
+write_tif(r"your_path.tif", xi_al, gtf, proj, nodata_value)
 
-write_tif(r"E:/graduate_work/v_2_results/xi_seasonally_frozen_final_era.tif", xi_seasonally_frozen, gtf, proj, nodata_value)
-write_tif(r"E:/graduate_work/v_2_results/xi_seasonally_thawed_final_era.tif", xi_seasonally_thawed, gtf, proj, nodata_value)
+write_tif(r"your_path.tif", xi_seasonally_frozen, gtf, proj, nodata_value)
+write_tif(r"your_path.tif", xi_seasonally_thawed, gtf, proj, nodata_value)
 
 
